@@ -1,17 +1,11 @@
 const express = require("express");
-const app = express();
-const port = 3000;
 const cors = require("cors");
 const qrcode = require("qrcode");
 
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+const app = express();
+const port = 3000;
 
+app.use(cors({ origin: "*", methods: ["GET", "POST"] }));
 app.use(express.json());
 
 // Generate QR code route
@@ -20,16 +14,16 @@ app.post("/generate", async (req, res) => {
     const { name, phone } = req.body;
 
     if (!name || !phone) {
-      return res.status(400).json({ error: "Name and phone number are required" });
+      return res.status(200).json({ error: "Name and phone number are required" });
     }
 
     console.log("Data received:", req.body);
 
-    // Data to encode in the QR code
-    const qrData = `Name: ${name}, Phone: ${phone}`;
+    // Format the data as a vCard
+    const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phone}\nEND:VCARD`;
 
     // Generate QR code as Base64 string
-    const qrCodeImage = await qrcode.toDataURL(qrData);
+    const qrCodeImage = await qrcode.toDataURL(vCardData);
 
     // Send back the QR code as response
     res.json({ qrCode: qrCodeImage });
@@ -40,5 +34,5 @@ app.post("/generate", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("I am working, bhai, at port " + port);
+  console.log(`iam on working bhAAi at ${port}`);
 });

@@ -16,10 +16,11 @@ const QRCodeGenerator = () => {
           name,
           phone,
         });
+
         setQr(response.data.qrCode);
         setShowQR(true);
       } catch (e) {
-        console.log(e);
+        console.error("Error generating QR Code:", e);
       }
     }
   };
@@ -33,7 +34,6 @@ const QRCodeGenerator = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="card shadow-lg p-4 text-center" style={{ width: "22rem" }}>
-        
         {showQR ? (
           // === QR Code Display Section ===
           <div>
